@@ -1,0 +1,97 @@
+[gd_scene load_steps=11 format=3 uid="uid://cqmwpxkovytyh"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_lsove"]
+[ext_resource type="Texture2D" uid="uid://cpxuocbokwf44" path="res://art/goblin/goblin_run_spritesheet.png" id="2_5b3a5"]
+[ext_resource type="Script" path="res://detectionarea.gd" id="3_vn7cx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3sktf"]
+radius = 58.0086
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2obse"]
+size = Vector2(13, 13)
+
+[sub_resource type="Animation" id="Animation_7csnu"]
+resource_name = "move"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_aj13x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4km5m"]
+_data = {
+"RESET": SubResource("Animation_aj13x"),
+"move": SubResource("Animation_7csnu")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qokfa"]
+radius = 6.0
+height = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jj5ey"]
+radius = 9.0
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_lsove")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_5b3a5")
+hframes = 6
+
+[node name="detectionarea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("3_vn7cx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detectionarea"]
+shape = SubResource("CircleShape2D_3sktf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_2obse")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4km5m")
+}
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("CapsuleShape2D_qokfa")
+
+[node name="hurbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurbox"]
+shape = SubResource("CircleShape2D_jj5ey")
+
+[connection signal="body_entered" from="detectionarea" to="." method="_on_detectionarea_body_entered"]
+[connection signal="body_exited" from="detectionarea" to="." method="_on_detectionarea_body_exited"]
+[connection signal="area_entered" from="hurbox" to="." method="_on_hurbox_area_entered"]

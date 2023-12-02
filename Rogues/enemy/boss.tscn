@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://da3fi1p7f1d0c"]
+
+[ext_resource type="PackedScene" uid="uid://cqmwpxkovytyh" path="res://enemy/enemy.tscn" id="1_kk7ju"]
+[ext_resource type="Script" path="res://enemy/boss.gd" id="2_jc8bj"]
+
+[node name="Boss" instance=ExtResource("1_kk7ju")]
+script = ExtResource("2_jc8bj")
+max_health = 10
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(3, 3)
+
+[node name="CollisionShape2D" parent="." index="2"]
+scale = Vector2(3, 3)
+
+[node name="CollisionShape2D" parent="hitbox" index="0"]
+scale = Vector2(3, 3)
+
+[node name="CollisionShape2D" parent="hurbox" index="0"]
+scale = Vector2(3, 3)

@@ -1,0 +1,171 @@
+[gd_scene load_steps=15 format=3 uid="uid://de8dwmqmuoj6e"]
+
+[ext_resource type="Script" path="res://Player/player.gd" id="1_ktpi6"]
+[ext_resource type="Texture2D" uid="uid://46lvbpqjcr33" path="res://art/knight_run_spritesheet.png" id="2_812ux"]
+[ext_resource type="Script" path="res://Player/Node2D.gd" id="3_j7htl"]
+[ext_resource type="PackedScene" uid="uid://n3lbdvwoxhcq" path="res://sword/sword.tscn" id="3_lrnys"]
+
+[sub_resource type="Animation" id="Animation_8eon8"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qc10g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_2xs17"]
+resource_name = "move"
+length = 0.6
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_0m2f5"]
+resource_name = "attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.0472, 1.0472]
+}
+
+[sub_resource type="Animation" id="Animation_t6ful"]
+resource_name = "attack_down"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0944, 4.18879]
+}
+
+[sub_resource type="Animation" id="Animation_r2l5v"]
+resource_name = "attack_direita"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.523599, 2.61799]
+}
+
+[sub_resource type="Animation" id="Animation_hk14b"]
+resource_name = "attack_esq"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [4.18879, 5.58505]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mfjso"]
+_data = {
+"RESET": SubResource("Animation_qc10g"),
+"attack": SubResource("Animation_0m2f5"),
+"attack_direita": SubResource("Animation_r2l5v"),
+"attack_down": SubResource("Animation_t6ful"),
+"attack_esq": SubResource("Animation_hk14b"),
+"idle": SubResource("Animation_8eon8"),
+"move": SubResource("Animation_2xs17")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n380c"]
+size = Vector2(7, 11)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b77sw"]
+radius = 5.0
+height = 16.0
+
+[node name="Player" type="CharacterBody2D"]
+texture_filter = 1
+collision_layer = 3
+script = ExtResource("1_ktpi6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_812ux")
+hframes = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mfjso")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_n380c")
+
+[node name="hurtbox" type="Area2D" parent="."]
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+shape = SubResource("CapsuleShape2D_b77sw")
+
+[node name="Node2D" type="Node2D" parent="."]
+rotation = 2.61799
+script = ExtResource("3_j7htl")
+
+[node name="sword" parent="Node2D" instance=ExtResource("3_lrnys")]
+position = Vector2(0.232051, -3.59808)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]
