@@ -1,0 +1,5 @@
+Links de onde foram retirandos os codigos
+
+https://github.com/MateuSai/Godot-Roguelike-Tutorial
+https://www.youtube.com/watch?v=0mUoRdYe0s4&list=PLMQtM2GgbPEVuTgD4Ln17ombTg6EahSLr
+https://www.youtube.com/watch?v=QKJP0Ig5Nyc&list=PLuQJapu7L84Qm0libslNu4CN6yILH8QIL&index=8
